@@ -139,6 +139,137 @@ namespace AjedrezJuego
 
 
 //copia la misma babossada para el j2 solo cambia possiones y los colres y create otro ya te deje las clases ahi solo no la freges
+// ya termine toda la parte del codigo we xd q sueño
+            lblJ2Titulo = new Label();
+            lblJ2Titulo.Text = "JUGADOR 2";
+            lblJ2Titulo.Font = new Font("Arial", 11, FontStyle.Bold);
+            lblJ2Titulo.Location = new Point(30, 230);
+            lblJ2Titulo.Size = new Size(190, 22);
+            lblJ2Titulo.ForeColor = Color.DarkRed;
+            this.Controls.Add(lblJ2Titulo);
 
+            lblJ2Nombre = new Label();
+            lblJ2Nombre.Text = "Nombre:";
+            lblJ2Nombre.Location = new Point(30, 260);
+            lblJ2Nombre.Size = new Size(70, 22);
+            lblJ2Nombre.Font = new Font("Arial", 9);
+            this.Controls.Add(lblJ2Nombre);
+
+            txtJ2Nombre = new TextBox();
+            txtJ2Nombre.Text = "Pedro";
+            txtJ2Nombre.Location = new Point(105, 258);
+            txtJ2Nombre.Size = new Size(130, 22);
+            txtJ2Nombre.Font = new Font("Arial", 9);
+            this.Controls.Add(txtJ2Nombre);
+
+            lblJ2Color = new Label();
+            lblJ2Color.Text = "Color piezas:";
+            lblJ2Color.Location = new Point(30, 295);
+            lblJ2Color.Size = new Size(90, 22);
+            lblJ2Color.Font = new Font("Arial", 9);
+            this.Controls.Add(lblJ2Color);
+
+            panelJ2Color = new Panel();
+            panelJ2Color.Location = new Point(125, 293);
+            panelJ2Color.Size = new Size(40, 22);
+            panelJ2Color.BackColor = colorJ2;
+            panelJ2Color.BorderStyle = BorderStyle.FixedSingle;
+            this.Controls.Add(panelJ2Color);
+
+            btnJ2Color = new Button();
+            btnJ2Color.Text = "Elegir";
+            btnJ2Color.Location = new Point(170, 291);
+            btnJ2Color.Size = new Size(65, 26);
+            btnJ2Color.Font = new Font("Arial", 8);
+            btnJ2Color.Click += (s, e) =>
+            {
+                ColorDialog dlg = new ColorDialog();
+                dlg.Color = colorJ2;
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    colorJ2 = dlg.Color;
+                    panelJ2Color.BackColor = colorJ2;
+                }
+            };
+            this.Controls.Add(btnJ2Color);
+
+            lblJ2Posicion = new Label();
+            lblJ2Posicion.Text = "Posicion inicial:";
+            lblJ2Posicion.Location = new Point(30, 333);
+            lblJ2Posicion.Size = new Size(110, 22);
+            lblJ2Posicion.Font = new Font("Arial", 9);
+            this.Controls.Add(lblJ2Posicion);
+
+            cmbJ2Posicion = new ComboBox();
+            cmbJ2Posicion.Location = new Point(145, 331);
+            cmbJ2Posicion.Size = new Size(130, 22);
+            cmbJ2Posicion.Font = new Font("Arial", 9);
+            cmbJ2Posicion.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbJ2Posicion.Items.Add("Normal");
+            cmbJ2Posicion.Items.Add("Ataque (torres al frente)");
+            cmbJ2Posicion.Items.Add("Defensa (torres junto al rey)");
+            cmbJ2Posicion.SelectedIndex = 0;
+            this.Controls.Add(cmbJ2Posicion);
+
+            // ===== BOTON INICIAR =====
+            btnIniciarJuego = new Button();
+            btnIniciarJuego.Text = "¡INICIAR JUEGO!";
+            btnIniciarJuego.Location = new Point(140, 380);
+            btnIniciarJuego.Size = new Size(190, 45);
+            btnIniciarJuego.Font = new Font("Arial", 12, FontStyle.Bold);
+            btnIniciarJuego.BackColor = Color.LimeGreen;
+            btnIniciarJuego.ForeColor = Color.White;
+            btnIniciarJuego.Click += new EventHandler(btnIniciarJuego_Click);
+            this.Controls.Add(btnIniciarJuego);
+
+            lblError = new Label();
+            lblError.Text = "";
+            lblError.Location = new Point(30, 435);
+            lblError.Size = new Size(400, 22);
+            lblError.Font = new Font("Arial", 8);
+            lblError.ForeColor = Color.Red;
+            lblError.TextAlign = ContentAlignment.MiddleCenter;
+            this.Controls.Add(lblError);
+        }
+
+        private PosicionInicial ObtenerPosicion(ComboBox cmb)
+        {
+            return cmb.SelectedIndex switch
+            {
+                1 => PosicionInicial.Ataque,
+                2 => PosicionInicial.Defensa,
+                _ => PosicionInicial.Normal
+            };
+        }
+
+        private void btnIniciarJuego_Click(object sender, EventArgs e)
+        {
+            string nombre1 = txtJ1Nombre.Text.Trim();
+            string nombre2 = txtJ2Nombre.Text.Trim();
+
+            if (nombre1 == "")
+            {
+                lblError.Text = "Ingrese el nombre del Jugador 1.";
+                return;
+            }
+            if (nombre2 == "")
+            {
+                lblError.Text = "Ingrese el nombre del Jugador 2.";
+                return;
+            }
+            if (nombre1 == nombre2)
+            {
+                lblError.Text = "Los nombres de los jugadores deben ser diferentes.";
+                return;
+            }
+
+            Jugador j1 = new Jugador(nombre1, 1, colorJ1, ObtenerPosicion(cmbJ1Posicion));
+            Jugador j2 = new Jugador(nombre2, 2, colorJ2, ObtenerPosicion(cmbJ2Posicion));
+
+            FormJuego juego = new FormJuego(j1, j2);
+            juego.ShowDialog();
+        }
+    }
+}
 
            
