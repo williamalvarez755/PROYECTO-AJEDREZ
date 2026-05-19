@@ -10,6 +10,8 @@ namespace AjedrezJuego
         private Label lblContrasena;
         private TextBox txtUsuario;
         private TextBox txtContrasena;
+        private Button btnEntrar;
+        private Label lblMensaje;
 
 
         private const string USUARIO_CORRECTO = "admin";
@@ -40,6 +42,54 @@ namespace AjedrezJuego
             txtUsuario.Location = new System.Drawing.Point(150, 78);
             txtUsuario.Size = new System.Drawing.Size(170, 23);
             txtUsuario.Font = new System.Drawing.Font("Arial", 10);
+             lblContrasena = new Label();
+
+            lblContrasena.Text = "Contraseña:";
+            lblContrasena.Location = new System.Drawing.Point(60, 125);
+            lblContrasena.Size = new System.Drawing.Size(90, 23);
+            lblContrasena.Font = new System.Drawing.Font("Arial", 10);
+
+            txtContrasena = new TextBox();
+            txtContrasena.Location = new System.Drawing.Point(150, 123);
+            txtContrasena.Size = new System.Drawing.Size(170, 23);
+            txtContrasena.Font = new System.Drawing.Font("Arial", 10);
+            txtContrasena.PasswordChar = '*';
+
+            btnEntrar = new Button();
+            btnEntrar.Text = "ENTRAR";
+            btnEntrar.Location = new System.Drawing.Point(140, 175);
+            btnEntrar.Size = new System.Drawing.Size(110, 35);
+            btnEntrar.Font = new System.Drawing.Font("Arial", 11, System.Drawing.FontStyle.Bold);
+            btnEntrar.BackColor = System.Drawing.Color.SteelBlue;
+            btnEntrar.ForeColor = System.Drawing.Color.White;
+            btnEntrar.Click += new EventHandler(btnEntrar_Click);
+
+            lblMensaje = new Label();
+            lblMensaje.Text = "";
+            lblMensaje.Location = new System.Drawing.Point(60, 225);
+            lblMensaje.Size = new System.Drawing.Size(270, 40);
+            lblMensaje.Font = new System.Drawing.Font("Arial", 9);
+            lblMensaje.ForeColor = System.Drawing.Color.Red;
+            lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+            Label lblPista = new Label();
+            lblPista.Text = "(Usuario: admin  /  Contraseña: Juego@123)";
+            lblPista.Location = new System.Drawing.Point(40, 265);
+            lblPista.Size = new System.Drawing.Size(310, 20);
+            lblPista.Font = new System.Drawing.Font("Arial", 7);
+            lblPista.ForeColor = System.Drawing.Color.Gray;
+            lblPista.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+            this.Controls.Add(lblTitulo);
+            this.Controls.Add(lblUsuario);
+            this.Controls.Add(txtUsuario);
+            this.Controls.Add(lblContrasena);
+            this.Controls.Add(txtContrasena);
+            this.Controls.Add(btnEntrar);
+            this.Controls.Add(lblMensaje);
+            this.Controls.Add(lblPista);
+
+            this.AcceptButton = btnEntrar;
         }
     }
 }
