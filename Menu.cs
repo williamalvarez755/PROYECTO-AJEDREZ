@@ -8,7 +8,8 @@ namespace AjedrezJuego
         private Label lblTitulo;
         private Button btnIniciar;
         private Button btnReglas;
-        private Button btnPuntaje;
+        private Button btnPuntaje;  
+        private Button btnSalir;
         public FormMenu()
         {
             this.Text = "JUEGO DE AJEDREZ - Menu Principal";
@@ -51,6 +52,21 @@ namespace AjedrezJuego
             btnPuntaje.BackColor = System.Drawing.Color.Goldenrod;
             btnPuntaje.ForeColor = System.Drawing.Color.White;
             btnPuntaje.Click += new EventHandler(btnPuntaje_Click);
+            btnSalir = new Button();
+            
+            btnSalir.Text = "4. Salir";
+            btnSalir.Location = new System.Drawing.Point(90, 270);
+            btnSalir.Size = new System.Drawing.Size(190, 45);
+            btnSalir.Font = new System.Drawing.Font("Arial", 11);
+            btnSalir.BackColor = System.Drawing.Color.Crimson;
+            btnSalir.ForeColor = System.Drawing.Color.White;
+            btnSalir.Click += new EventHandler(btnSalir_Click);
+
+            this.Controls.Add(lblTitulo);
+            this.Controls.Add(btnIniciar);
+            this.Controls.Add(btnReglas);
+            this.Controls.Add(btnPuntaje);
+            this.Controls.Add(btnSalir);
         }
     }
 }
