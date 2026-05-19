@@ -24,33 +24,52 @@ namespace AjedrezJuego
             this.Controls.Add(lblTitulo);
 
             string reglas = @"PIEZAS:
-REY  : Se mueve 1 casilla en cualquier direccion.
-TOR  : Se mueve en linea recta (no salta piezas).
-SOL  : Avanza 1 casilla al frente. Ataca en diagonal.
+  - REY  : Se mueve 1 casilla en cualquier direccion.
+  - TOR  : Se mueve en linea recta (no salta piezas).
+  - SOL  : Avanza 1 casilla al frente. Ataca en diagonal.
              El soldado NO puede retroceder.
 
 TURNOS:
-Los jugadores se turnan de uno en uno.
-Haga clic en su pieza y luego en la casilla destino.
-Si hace clic dos veces en la misma pieza la deselecciona.
+  - Los jugadores se turnan de uno en uno.
+  - Haga clic en su pieza y luego en la casilla destino.
+  - Si hace clic dos veces en la misma pieza la deselecciona.
 
 ATAQUE:
-Si mueve su pieza a donde esta el rival, lo captura.
-La pieza capturada se elimina del tablero.
+  - Si mueve su pieza a donde esta el rival, lo captura.
+  - La pieza capturada se elimina del tablero.
 
 PUNTAJE:
-Soldado capturado  = 10 puntos
-Torre capturada    = 10 puntos
-Rey capturado      = 60 puntos
+  - Soldado capturado  = 10 puntos
+  - Torre capturada    = 10 puntos
+  - Rey capturado      = 60 puntos
 
 CONDICION DE VICTORIA:
-Capture el rey del oponente, o
-El oponente pierda todas sus piezas.
+  - Capture el rey del oponente, o
+  - El oponente pierda todas sus piezas.
 
 POSICION INICIAL:
-ATAQUE  : Las torres van al frente junto a los soldados.
-DEFENSA : Las torres protegen al rey en la fila trasera.
-NORMAL  : Las torres en las esquinas de la fila trasera.";
+  - ATAQUE  : Las torres van al frente junto a los soldados.
+  - DEFENSA : Las torres protegen al rey en la fila trasera.
+  - NORMAL  : Las torres en las esquinas de la fila trasera.";
+
+            TextBox txtReglas = new TextBox();
+            txtReglas.Text = reglas;
+            txtReglas.Location = new Point(20, 50);
+            txtReglas.Size = new Size(450, 370);
+            txtReglas.Font = new Font("Courier New", 9);
+            txtReglas.Multiline = true;
+            txtReglas.ReadOnly = true;
+            txtReglas.ScrollBars = ScrollBars.Vertical;
+            txtReglas.BackColor = Color.White;
+            this.Controls.Add(txtReglas);
+
+            Button btnCerrar = new Button();
+            btnCerrar.Text = "Cerrar";
+            btnCerrar.Location = new Point(190, 435);
+            btnCerrar.Size = new Size(110, 35);
+            btnCerrar.Font = new Font("Arial", 10);
+            btnCerrar.Click += (s, e) => this.Close();
+            this.Controls.Add(btnCerrar);
         }
     }
 }
