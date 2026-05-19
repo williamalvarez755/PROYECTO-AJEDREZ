@@ -91,5 +91,24 @@ namespace AjedrezJuego
 
             this.AcceptButton = btnEntrar;
         }
+            private void btnEntrar_Click(object sender, EventArgs e)
+        {
+            string usuario = txtUsuario.Text.Trim();
+            string contrasena = txtContrasena.Text;
+
+            if (usuario == USUARIO_CORRECTO && contrasena == CONTRASENA_CORRECTA)
+            {
+                FormMenu menu = new FormMenu();
+                this.Hide();
+                menu.ShowDialog();
+                this.Close();
+            }
+            else
+            {
+                lblMensaje.Text = "Usuario o contraseña incorrectos. Intente de nuevo.";
+                txtContrasena.Clear();
+                txtContrasena.Focus();
+            }
+        }
     }
 }
