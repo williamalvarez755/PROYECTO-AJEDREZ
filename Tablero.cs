@@ -117,7 +117,7 @@ namespace AjedrezJuego
             // no toques lo del rey y la torre porfa, es que si no se me complica el codigo xddddd
             if (pieza.tipo == "REY")
             {
-                // El Rey se mueve una sola casilla en cualquier direccion
+
                 int absF = dFila;
                 if (absF < 0)
                 {
@@ -135,13 +135,12 @@ namespace AjedrezJuego
             }
             else if (pieza.tipo == "TOR")
             {
-                // La Torre solo se mueve en linea recta
+
                 if (dFila != 0 && dCol != 0)
                 {
                     return "La Torre solo se mueve en linea recta.";
                 }
 
-                // Calcular el sentido del movimiento
                 int pasoFila = 0;
                 int pasoCol = 0;
                 if (dFila > 0)
@@ -160,7 +159,121 @@ namespace AjedrezJuego
                 {
                     pasoCol = -1;
                 }
+                 int fActual = origenFila + pasoFila;
+                int cActual = origenCol + pasoCol;
+                while (fActual != destinoFila || cActual != destinoCol)
+                {
+                    if (casillas[fActual, cActual] != null)
+                    {
+                        return "La Torre no puede saltar otras piezas.";
+                    }
+                    fActual = fActual + pasoFila;
+                    cActual = cActual + pasoCol;
+                }
+            }
+            else if (pieza.tipo == "SOL")
+            {
+  
+                int direccion;
+                if (pieza.jugador == 1)
+                {
+                    direccion = -1;
+                }
+                else
+                {
+                    direccion = 1;
+                }
+
+                if (destino == null)
+                {
+  
+                    if (dFila != direccion || dCol != 0)
+                    {
+                        return "El Soldado avanza una casilla al frente, o ataca en diagonal.";
+                    }
+                }
+                else
+                {
+
+                    int absC = dCol;
+                    if (absC < 0)
+                    {
+                        absC = -absC;
+                    }
+                    if (dFila != direccion || absC != 1)
+                    {
+                        return "El Soldado solo ataca en diagonal hacia adelante.";
+                    }
+                }
+            }
+            else
+            {
+                return "Tipo de pieza desconocido.";
+            }
+
+            return "";
         }
+
+        public Pieza EjecutarMovimiento(int origenFila, int origenCol, int destinoFila, int destinoCol)
+        {
+            Pieza piezaMovida = casillas[origenFila, origenCol];
+            Pieza capturada = casillas[destinoFila, destinoCol];
+
+            if (capturada != null)
+            {
+                capturada.viva = false;
+            }
+
+            casillas[origenFila, origenCol] = null;
+            piezaMovida.fila = destinoFila;
+            piezaMovida.columna = destinoCol;
+            casillas[destinoFila, destinoCol] = piezaMovida;
+
+            return capturada;
         }
-    }    
+
+        public bool TieneRey(int jugador)
+        {
+            int f;
+            int c;
+            for (f = 0; f < 8; f = f + 1)
+            {
+                for (c = 0; c < 8; c = c + 1)
+                {
+                    Pieza p = casillas[f, c];
+                    if (p != null)
+                    {
+                        if (p.tipo == "REY" && p.jugador == jugador)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool TienePiezas(int jugador)
+        {
+            int f;
+            int c;
+            for (f = 0; f < 8; f = f + 1)
+            {
+                for (c = 0; c < 8; c = c + 1)
+                {
+                    Pieza p = casillas[f, c];
+                    if (p != null)
+                    {
+                        if (p.jugador == jugador)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
+}
+
+//ahi esta me debes mi coca  porq me lo eavente yogi
