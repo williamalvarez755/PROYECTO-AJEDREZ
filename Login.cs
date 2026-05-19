@@ -71,6 +71,25 @@ namespace AjedrezJuego
             lblMensaje.Font = new System.Drawing.Font("Arial", 9);
             lblMensaje.ForeColor = System.Drawing.Color.Red;
             lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+            Label lblPista = new Label();
+            lblPista.Text = "(Usuario: admin  /  Contraseña: Juego@123)";
+            lblPista.Location = new System.Drawing.Point(40, 265);
+            lblPista.Size = new System.Drawing.Size(310, 20);
+            lblPista.Font = new System.Drawing.Font("Arial", 7);
+            lblPista.ForeColor = System.Drawing.Color.Gray;
+            lblPista.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
+            this.Controls.Add(lblTitulo);
+            this.Controls.Add(lblUsuario);
+            this.Controls.Add(txtUsuario);
+            this.Controls.Add(lblContrasena);
+            this.Controls.Add(txtContrasena);
+            this.Controls.Add(btnEntrar);
+            this.Controls.Add(lblMensaje);
+            this.Controls.Add(lblPista);
+
+            this.AcceptButton = btnEntrar;
         }
     }
 }
