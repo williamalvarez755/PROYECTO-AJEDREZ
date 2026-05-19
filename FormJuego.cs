@@ -127,3 +127,155 @@ namespace AjedrezJuego
 
             panelTablero.Invalidate();
         }
+
+// el resto del codigo ahi se fue :v
+private void PanelTablero_Paint(object? sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            for (int f = 0; f < 8; f++)
+            {
+                for (int c = 0; c < 8; c++)
+                {
+                    // Color de la casilla
+                    Color fondo;
+                    if (f == selFila && c == selCol)
+                        fondo = colorSeleccion;
+                    else
+                        fondo = ((f + c) % 2 == 0) ? colorCasillaClara : colorCasillaOscura;
+
+                    Rectangle rect = new Rectangle(c * TAM_CASILLA, f * TAM_CASILLA, TAM_CASILLA, TAM_CASILLA);
+                    g.FillRectangle(new SolidBrush(fondo), rect);
+                    g.DrawRectangle(Pens.Black, rect);
+
+                    // Dibujar pieza
+                    Pieza? pieza = tablero.ObtenerPieza(f, c);
+                    if (pieza != null && pieza.Viva)
+                    {
+                        Color colorPieza = pieza.Jugador == 1 ? jugador1.ColorPiezas : jugador2.ColorPiezas;
+                        string texto = pieza.Simbolo();
+
+                        // Fondo de la pieza (circulo/ovalo)
+                        Rectangle ovalRect = new Rectangle(c * TAM_CASILLA + 5, f * TAM_CASILLA + 8, TAM_CASILLA - 10, TAM_CASILLA - 18);
+                        g.FillEllipse(new SolidBrush(colorPieza), ovalRect);
+                        g.DrawEllipse(Pens.Black, ovalRect);
+
+                        // Texto encima
+                        Font fuente = new Font("Arial", 8, FontStyle.Bold);
+                        SizeF tamTexto = g.MeasureString(texto, fuente);
+                        float tx = c * TAM_CASILLA + (TAM_CASILLA - tamTexto.Width) / 2f;
+                        float ty = f * TAM_CASILLA + (TAM_CASILLA - tamTexto.Height) / 2f;
+
+                        // Color de texto contraste
+                        Color textoColor = EsColorOscuro(colorPieza) ? Color.White : Color.Black;
+                        g.DrawString(texto, fuente, new SolidBrush(textoColor), tx, ty);
+                    }
+                }
+            }
+
+            // Numeros y letras del borde
+            Font fuenteBorde = new Font("Arial", 7);
+            string[] letras = { "a", "b", "c", "d", "e", "f", "g", "h" };
+            for (int i = 0; i < 8; i++)
+            {
+                g.DrawString((8 - i).ToString(), fuenteBorde, Brushes.Black, 2, i * TAM_CASILLA + 2);
+                g.DrawString(letras[i], fuenteBorde, Brushes.Black, i * TAM_CASILLA + TAM_CASILLA - 12, TAM_CASILLA * 8 - 14);
+            }
+        }
+
+        private bool EsColorOscuro(Color c)
+        {
+            return (c.R * 0.299 + c.G * 0.587 + c.B * 0.114) < 128;
+        }
+
+        private void PanelTablero_MouseClick(object? sender, MouseEventArgs e)
+        {
+            int col = e.X / TAM_CASILLA;
+            int fila = e.Y / TAM_CASILLA;
+
+            if (fila < 0 || fila > 7 || col < 0 || col > 7) return;
+
+            lblMensaje.Text = "";
+
+            if (piezaSeleccionada == null)
+            {
+                // Primera seleccion: elegir pieza
+                Pieza? pieza = tablero.ObtenerPieza(fila, col);
+                if (pieza == null)
+                {
+                    lblMensaje.Text = "No hay ninguna pieza en esa casilla.";
+                    return;
+                }
+                if (pieza.Jugador != turnoActual)
+                {
+                    lblMensaje.Text = "Esa pieza no es suya. Es el turno de " +
+                        (turnoActual == 1 ? jugador1.Nombre : jugador2.Nombre) + ".";
+                    return;
+                }
+                piezaSeleccionada = pieza;
+                selFila = fila;
+                selCol = col;
+                panelTablero.Invalidate();
+            }
+            else
+            {
+                // Segunda seleccion: mover
+                if (fila == selFila && col == selCol)
+                {
+                    // Deseleccionar
+                    piezaSeleccionada = null;
+                    selFila = -1;
+                    selCol = -1;
+                    panelTablero.Invalidate();
+                    return;
+                }
+
+                string? error = tablero.ValidarMovimiento(piezaSeleccionada, fila, col, turnoActual);
+                if (error != null)
+                {
+                    lblMensaje.Text = "Movimiento invalido: " + error;
+                    piezaSeleccionada = null;
+                    selFila = -1; selCol = -1;
+                    panelTablero.Invalidate();
+                    return;
+                }
+
+                // Ejecutar movimiento
+                string movDesc = $"{(turnoActual == 1 ? jugador1.Nombre : jugador2.Nombre)}: " +
+                    $"{piezaSeleccionada.Simbolo()} ({selFila},{selCol})->({fila},{col})";
+
+                Pieza? capturada = tablero.EjecutarMovimiento(piezaSeleccionada, fila, col);
+
+                if (capturada != null)
+                {
+                    int puntos = capturada.PuntosAlEliminar();
+                    if (turnoActual == 1)
+                        jugador1.SumarPuntos(puntos);
+                    else
+                        jugador2.SumarPuntos(puntos);
+
+                    movDesc += $" [captura {capturada.Simbolo()} +{puntos}pts]";
+                    lblMensaje.Text = $"¡Captura! {capturada.Simbolo()} eliminado. +{puntos} puntos.";
+
+                    // Verificar victoria
+                    if (!tablero.ReyVivo(capturada.Jugador) || !tablero.TienePiezas(capturada.Jugador))
+                    {
+                        lstMovimientos.Items.Add(movDesc);
+                        TerminarJuego(turnoActual);
+                        return;
+                    }
+                }
+
+                lstMovimientos.Items.Add(movDesc);
+                lstMovimientos.SelectedIndex = lstMovimientos.Items.Count - 1;
+
+                piezaSeleccionada = null;
+                selFila = -1; selCol = -1;
+
+                // Cambiar turno
+                turnoActual = turnoActual == 1 ? 2 : 1;
+                ActualizarUI();
+            }
+        }
+    }
+}
