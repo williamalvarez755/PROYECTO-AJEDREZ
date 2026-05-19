@@ -8,8 +8,9 @@ namespace AjedrezJuego
         private Label lblTitulo;
         private Button btnIniciar;
         private Button btnReglas;
-        private Button btnPuntaje;  
+        private Button btnPuntaje;
         private Button btnSalir;
+
         public FormMenu()
         {
             this.Text = "JUEGO DE AJEDREZ - Menu Principal";
@@ -20,7 +21,7 @@ namespace AjedrezJuego
             this.BackColor = System.Drawing.Color.LightCyan;
 
             lblTitulo = new Label();
-            lblTitulo.Text = "     JUEGO DE TABLERO     ";
+            lblTitulo.Text = "===== JUEGO DE TABLERO =====";
             lblTitulo.Font = new System.Drawing.Font("Arial", 13, System.Drawing.FontStyle.Bold);
             lblTitulo.Location = new System.Drawing.Point(30, 25);
             lblTitulo.Size = new System.Drawing.Size(310, 30);
@@ -52,8 +53,8 @@ namespace AjedrezJuego
             btnPuntaje.BackColor = System.Drawing.Color.Goldenrod;
             btnPuntaje.ForeColor = System.Drawing.Color.White;
             btnPuntaje.Click += new EventHandler(btnPuntaje_Click);
+
             btnSalir = new Button();
-            
             btnSalir.Text = "4. Salir";
             btnSalir.Location = new System.Drawing.Point(90, 270);
             btnSalir.Size = new System.Drawing.Size(190, 45);
@@ -67,6 +68,38 @@ namespace AjedrezJuego
             this.Controls.Add(btnReglas);
             this.Controls.Add(btnPuntaje);
             this.Controls.Add(btnSalir);
+        }
+
+        private void btnIniciar_Click(object sender, EventArgs e)
+        {
+            FormConfiguracion config = new FormConfiguracion();
+            config.ShowDialog();
+        }
+
+        private void btnReglas_Click(object sender, EventArgs e)
+        {
+            FormReglas reglas = new FormReglas();
+            reglas.ShowDialog();
+        }
+
+        private void btnPuntaje_Click(object sender, EventArgs e)
+        {
+            FormPuntaje puntaje = new FormPuntaje();
+            puntaje.ShowDialog();
+        }
+
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            DialogResult resultado = MessageBox.Show(
+                "¿Seguro que quiere salir del juego?",
+                "Salir",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
         }
     }
 }
