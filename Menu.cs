@@ -8,6 +8,7 @@ namespace AjedrezJuego
         private Label lblTitulo;
         private Button btnIniciar;
         private Button btnReglas;
+        private Button btnPuntaje;
         public FormMenu()
         {
             this.Text = "JUEGO DE AJEDREZ - Menu Principal";
@@ -41,6 +42,15 @@ namespace AjedrezJuego
             btnReglas.BackColor = System.Drawing.Color.RoyalBlue;
             btnReglas.ForeColor = System.Drawing.Color.White;
             btnReglas.Click += new EventHandler(btnReglas_Click);
+
+            btnPuntaje = new Button();
+            btnPuntaje.Text = "3. Ver Puntaje Mas Alto";
+            btnPuntaje.Location = new System.Drawing.Point(90, 210);
+            btnPuntaje.Size = new System.Drawing.Size(190, 45);
+            btnPuntaje.Font = new System.Drawing.Font("Arial", 11);
+            btnPuntaje.BackColor = System.Drawing.Color.Goldenrod;
+            btnPuntaje.ForeColor = System.Drawing.Color.White;
+            btnPuntaje.Click += new EventHandler(btnPuntaje_Click);
         }
     }
 }
